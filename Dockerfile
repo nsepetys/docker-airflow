@@ -1,17 +1,21 @@
 # VERSION 1.9.0-1
-# AUTHOR: Matthieu "Puckel_" Roisil
-# DESCRIPTION: Basic Airflow container
-# BUILD: docker build --rm -t puckel/docker-airflow .
-# SOURCE: https://github.com/puckel/docker-airflow
+# ORIGINAL AUTHOR: Matthieu "Puckel_" Roisil
+# REVISIONS BY: NSEPETYS
+# DESCRIPTION: Basic Airflow container with mysql queuing and old-skool python (2.7.14) flavors
+# BUILD: docker build --rm -t nsepetys/docker-airflow .
+# SOURCE: https://github.com/nsepetys/docker-airflow
 
+# Using lowest python version with official python img. try different tag for linux (besides alpine 3.7) if this causes issues
+# FROM python:2.7.14-alpine3.7
 FROM python:3.6-slim
-MAINTAINER Puckel_
+MAINTAINER nsepetys
 
 # Never prompts the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
 # Airflow
+# ARG AIRFLOW_VERSION=1.8
 ARG AIRFLOW_VERSION=1.9.0
 ARG AIRFLOW_HOME=/usr/local/airflow
 
@@ -23,6 +27,7 @@ ENV LC_CTYPE en_US.UTF-8
 ENV LC_MESSAGES en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
+   # && pip install pandas==0.18.1 \
 RUN set -ex \
     && buildDeps=' \
         python3-dev \
